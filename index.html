@@ -8,8 +8,46 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <input id="XHR" type="button" value="XHR button">
-    <input id="Fetch" type="button" value="Fetch button">
-    <input id="Jquery" type="button" value="JQuery button">
+
+    <!--
+        Animacion personalizada de carga de pantalla
+        Diferentes estados del botón, hoover, click, input con thoughbot lighter darker
+        validación igual al tema 6, pero todos los campos solo obligatorio y telefono empieza por 6, 8 y 9
+    -->
+
+    <section> 
+        <header>
+            <h1>Tiendas</h1>
+        </header>
+    </section>
+    
+    <div class="bloqueBotones">
+        <input id="XHR" type="button" value="XHR button">
+        <input id="FETCH" type="button" value="Fetch button">
+        <input id="JQUERY" type="button" value="JQuery button">    
+    </div>
+
+    <div class="bloquePeticiones hidden">
+        <div class="navigator">
+            <span class="newTienda">Nueva tienda</span>
+            <div>
+                <input type="text" name="idTienda" id="idTienda" placeholder="Id de Tienda">
+                <input id="search" type="button" value="Buscar">
+            </div>
+        </div>
+        <div class="mostradoTiendas"></div>
+        
+    </div>
+
+
+    <template id="tiendaTemplate">
+        <div id="bloqueTienda">
+            <h2 class="title"></h2>
+            <h4 class="direction"></h4>
+            <h4 class="phone"></h4>
+        </div>
+    </template>
+
+    <script src="./js/main.js" type="module"></script>
 </body>
 </html>

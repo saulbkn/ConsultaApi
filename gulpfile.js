@@ -11,6 +11,7 @@ gulp.task ('sass', function () {
     return gulp.src('./css/**/*.scss')
             .pipe(sass().on('error', sass.logError))
             .pipe(gulp.dest('./css'))
+            //Recarga los estilos de la página, pero con reload se recarga la propia página.
             .pipe(browserSync.stream());
 });
 

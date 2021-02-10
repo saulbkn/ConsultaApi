@@ -2,16 +2,57 @@
   box-sizing: border-box;
   margin: 0; }
 
-body {
+html, body {
+  height: 100%; }
+
+header {
+  width: 100%;
+  background-color: #147507; }
+  header h1 {
+    text-align: center;
+    padding: 0.2em;
+    color: #c9d423; }
+
+.bloqueBotones {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-self: center;
   align-items: center;
-  gap: 1em;
-  border: 2px solid; }
+  gap: 1em; }
+  .bloqueBotones input {
+    border-radius: 1em;
+    background-color: lightgreen; }
 
-input {
+.bloquePeticiones {
+  margin-left: 7em;
+  margin-right: 7em;
+  margin-top: 2em; }
+  .bloquePeticiones .navigator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em; }
+    .bloquePeticiones .navigator span {
+      margin-left: 3em; }
+    .bloquePeticiones .navigator div {
+      margin-right: 3em; }
+  .bloquePeticiones .mostradoTiendas {
+    display: flex;
+    flex-direction: column;
+    gap: 1em; }
+
+#bloqueTienda {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #777777;
   border-radius: 1em;
-  background-color: lightgreen; }
+  box-shadow: 0px 3px #777777; }
+
+.hidden {
+  display: none !important; }
+
+.show {
+  display: block; }

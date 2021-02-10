@@ -1,20 +1,85 @@
+$greenBackground: #147507;
+$yellowText: #c9d423;
+$grayBorder: #777777;
+
 *{
     box-sizing: border-box;
     margin: 0;
 }
 
-body{
+html,body{
     height: 100%;
-    display:flex;
+}
+
+header{
+    width: 100%;
+    background-color: $greenBackground;
+
+    h1{
+        text-align: center;
+        padding: 0.2em;
+        color: $yellowText;
+
+    }
+
+}
+
+.bloqueBotones{
+    height: 100%;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-self: center;
     align-items: center;
     gap: 1em;
-    border: 2px solid;
+    
+    input{
+        border-radius: 1em;
+        background-color: lightgreen;
+    }
 }
 
-input{
-    border-radius: 1em;
-    background-color: lightgreen;
+.bloquePeticiones{
+    margin-left: 7em;
+    margin-right: 7em;
+    margin-top: 2em;
+    .navigator{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1em;
+
+        span{
+            margin-left: 3em;
+        }
+
+        div{
+            margin-right: 3em;
+        }
+    }
+
+    .mostradoTiendas{
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
 }
+
+#bloqueTienda{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid $grayBorder;
+    border-radius: 1em;
+    box-shadow: 0px 3px $grayBorder;
+}
+
+
+.hidden{
+    display: none !important;
+}
+
+.show{
+    display: block;
+}
+
