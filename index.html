@@ -35,6 +35,37 @@
                 <input id="search" type="button" value="Buscar">
             </div>
         </div>
+        <form id="form" action="#" novalidate>
+            <div class="container">
+                <p class="title">Datos Personales</p>
+                <div class="dataContainer">
+                    <div class="data">
+                        <label for="name">Nombre</label>
+                        <input class="control" type="text" id="name" placeholder="Name" pattern="^[A-ZÁÉÍÓÚ][a-zñáéíóú]+(?: [A-ZÁÉÍÓÚ][a-zñáéíóú]+)?$" required>
+                        <label class="error"></label>
+                    </div>
+                    <div class="data">
+                        <label for="direction">Direccion</label>
+                        <input class="control" type="text" id="direction" placeholder="Direccion" required pattern="^[a-zA-Z]+[a-zA-Z\s-]*[a-zA-Z-]+$">
+                        <label class="error"></label>
+                    </div>
+                </div>
+                <div class="dataContainer mt-2">
+                    <div class="data">
+                        <label for="phone">Telefono</label>
+                        <input class="control" type="text" id="phone" placeholder="Ejem: (+34)922321642" pattern="^\(\+\d{2,3}\)[689]\d{8}$|^[689]\d{8}$" required>
+                        <label class="error"></label>
+                    </div>
+                    <div class="data">
+                        <label for="local">Localidad</label>
+                        <input class="control" type="text" id="local" placeholder="Localidad" pattern="^38[0-9]{3}$" maxlength="5" required>
+                        <label class="error "></label>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="mt-2" id="sendInfo" value="Enviar">
+        </form>
+
         <div class="mostradoTiendas"></div>
         
     </div>
@@ -49,5 +80,9 @@
     </template>
 
     <script src="./js/main.js" type="module"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
 </body>
 </html>

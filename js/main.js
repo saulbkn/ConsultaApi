@@ -20,7 +20,7 @@ blockBotonsPetitions.querySelectorAll('input').forEach(element => {
 let idTiendaNode = document.getElementById("idTienda");
 
 document.getElementById("search").addEventListener("click", () => {
-    cleanAll();
+    clearNode(blockDatas);
     var id = idTiendaNode.value;
 
     if(id === ""){
@@ -37,8 +37,6 @@ document.getElementById("search").addEventListener("click", () => {
     }
 });
 
-let tiendasToShow = [];
-
 let petitions = {
     "getAllTiendas": () => {},
     "getTiendaById": () => {},
@@ -52,11 +50,8 @@ const getTiendasXHR = () => {
     
     xhr.onload = function() {
         if (xhr.status === 200) {
-            cleanAll();
             var json = JSON.parse(xhr.responseText);
-            tiendasToShow = json["Tiendas"];
-
-            createPetitionBody();
+            chargeAllTiendas(json);
         }else {
             console.log(xhr.status);
             createTiendaFailedNode("Tienda no encontrada");
@@ -72,13 +67,8 @@ const getTiendaByIdXHR = (id) => {
     xhr.onload = function() {
         if (xhr.status === 200) {
             var json = JSON.parse(xhr.responseText);
-            console.log(json.length);
-            if(json.length !== undefined){
-                tiendasToShow.push(json);
-                createPetitionBody();
-            }else{
-                createTiendaFailedNode("Tienda no encontrada");
-            }
+            chargeTiendaById(json);
+            
         }else {
             console.log(xhr.status);
             createTiendaFailedNode("Tienda no encontrada");
@@ -102,11 +92,8 @@ const getTiendasFetch = () => {
       fetch(urlTienda, options)
         .then(response => response.text())
         .then(data => {
-            cleanAll();
             var json = JSON.parse(data);
-            tiendasToShow = json["Tiendas"];
-
-            createPetitionBody();
+            chargeAllTiendas(json);
         })
         .catch(err => {
             console.log(err);
@@ -122,7 +109,11 @@ const getTiendaByIdFetch = (id) => {
     fetch(urlTienda + "/" + id, options)
         .then(response => response.text())
         .then(data => {
-            console.log(data);
+            var json = JSON.parse(data);
+            chargeTiendaById(json);
+    }).catch(err => {
+        console.log(err);
+        createTiendaFailedNode("Tienda no encontrada");
     });
 }
 
@@ -131,8 +122,43 @@ const insertTiendaFetch = (tienda) => {
 }
 
 //JQUERY petitions
+const getTiendasJquery = () => {
+    $.ajax({
+        url : urlTienda,
+        type : 'GET', 
+        dataType : 'json',
+        success : function(json) { //función a ejecutar si es satisfactoria
+            chargeAllTiendas(json);
 
+        },
+        error : function(jqXHR, status, error) { //función error
+            console.log("error");
+            console.log(status);
+            console.log(error);
+        }
+    }); 
+}
 
+const getTiendaByIdJquery = (id) => {
+    $.ajax({
+        url : urlTienda + "/" + id,
+        type : 'GET', 
+        dataType : 'json',
+        success : function(json) { //función a ejecutar si es satisfactoria
+            chargeTiendaById(json);
+
+        },
+        error : function(jqXHR, status, error) { //función error
+            console.log("error");
+            console.log(status);
+            console.log(error);
+        }
+    });
+}
+
+const insertTiendaJquery = (tienda) => {
+
+}
 //OTHER METHODS
 function chargePetitions(ajaxType){
     switch(ajaxType){
@@ -147,21 +173,37 @@ function chargePetitions(ajaxType){
             petitions.insertTienda = insertTiendaFetch;
             break;
         case "JQUERY":
-            
+            petitions.getAllTiendas = getTiendasJquery;
+            petitions.getTiendaById = getTiendaByIdJquery;
+            petitions.insertTienda = insertTiendaJquery;
             break;
         default: break;
     }
 }
 
-function searchTiendaById(button){
-    
+function chargeAllTiendas(json){
+    let tiendasToShow = json["Tiendas"];
+
+    createPetitionBody(tiendasToShow);
 }
 
-function chargeAllTiendas(){
-    
+function chargeTiendaById(json){
+        let tiendasToShow = [];
+        
+        if(json.Nombre !== undefined){
+            tiendasToShow.push(json);
+        }
+        
+        createPetitionBody(tiendasToShow);
 }
 
-function createPetitionBody(){
+function chargeInsertTienda(){
+
+}
+
+function createPetitionBody(tiendasToShow){
+    clearNode(blockDatas);
+
     if(tiendasToShow.length === 0){
         createTiendaFailedNode("Tienda no encontrada");
     }else{
@@ -204,10 +246,5 @@ function removeClassFromNode(node, classToRemove){
     if (node.classList.contains(classToRemove)) {
         node.classList.remove(classToRemove);
       }
-}
-
-function cleanAll(){
-    clearNode(blockDatas);
-    tiendasToShow = [];
 }
 

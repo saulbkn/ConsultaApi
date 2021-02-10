@@ -40,20 +40,77 @@ header{
 }
 
 .bloquePeticiones{
-    margin-left: 7em;
-    margin-right: 7em;
+    margin-left: 6em;
+    margin-right: 6em;
     margin-top: 2em;
+
     .navigator{
         display: flex;
         justify-content: space-between;
         margin-bottom: 1em;
+    }
 
-        span{
-            margin-left: 3em;
+    #form{
+        display: flex;
+        flex-direction: column;
+        border: 2px solid $grayBorder;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        padding: 0.7em;
+        gap:0.7em;
+        border-radius: 1em;
+
+        #sendInfo{
+            align-self: flex-end;
         }
 
-        div{
-            margin-right: 3em;
+        .container{
+            display: flex;
+            flex-direction: column;
+            gap: 0.7em;
+            
+    
+            .title{
+                font-size: 20px;
+            }
+    
+            .dataContainer{
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+    
+                .data{
+                    flex-basis: 50%;
+    
+                    &:nth-child(1){
+                        padding-right: 0.7em;
+                    }
+    
+                    label{
+                        display: block;
+                    }
+                    
+                    input{
+                        border-radius: 3px;
+                        border: 1px solid black;
+                        padding: 3px;
+                        width: 100%;
+                    }
+    
+                    .inputError{
+                        border: 2px solid red;
+                    }
+                    
+                    .inputCorrect{
+                        border: 2px solid green;
+                    }
+    
+                    .error{
+                        color: red;
+                        font-size: 12px;
+                    }
+                }
+            }
         }
     }
 
@@ -61,17 +118,19 @@ header{
         display: flex;
         flex-direction: column;
         gap: 1em;
-    }
-}
 
-#bloqueTienda{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid $grayBorder;
-    border-radius: 1em;
-    box-shadow: 0px 3px $grayBorder;
+        
+        #bloqueTienda{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid $grayBorder;
+            border-radius: 1em;
+            box-shadow: 0px 3px $grayBorder;
+        }
+
+    }
 }
 
 

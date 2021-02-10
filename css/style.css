@@ -26,30 +26,64 @@ header {
     background-color: lightgreen; }
 
 .bloquePeticiones {
-  margin-left: 7em;
-  margin-right: 7em;
+  margin-left: 6em;
+  margin-right: 6em;
   margin-top: 2em; }
   .bloquePeticiones .navigator {
     display: flex;
     justify-content: space-between;
     margin-bottom: 1em; }
-    .bloquePeticiones .navigator span {
-      margin-left: 3em; }
-    .bloquePeticiones .navigator div {
-      margin-right: 3em; }
+  .bloquePeticiones #form {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #777777;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 0.7em;
+    gap: 0.7em;
+    border-radius: 1em; }
+    .bloquePeticiones #form #sendInfo {
+      align-self: flex-end; }
+    .bloquePeticiones #form .container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7em; }
+      .bloquePeticiones #form .container .title {
+        font-size: 20px; }
+      .bloquePeticiones #form .container .dataContainer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap; }
+        .bloquePeticiones #form .container .dataContainer .data {
+          flex-basis: 50%; }
+          .bloquePeticiones #form .container .dataContainer .data:nth-child(1) {
+            padding-right: 0.7em; }
+          .bloquePeticiones #form .container .dataContainer .data label {
+            display: block; }
+          .bloquePeticiones #form .container .dataContainer .data input {
+            border-radius: 3px;
+            border: 1px solid black;
+            padding: 3px;
+            width: 100%; }
+          .bloquePeticiones #form .container .dataContainer .data .inputError {
+            border: 2px solid red; }
+          .bloquePeticiones #form .container .dataContainer .data .inputCorrect {
+            border: 2px solid green; }
+          .bloquePeticiones #form .container .dataContainer .data .error {
+            color: red;
+            font-size: 12px; }
   .bloquePeticiones .mostradoTiendas {
     display: flex;
     flex-direction: column;
     gap: 1em; }
-
-#bloqueTienda {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid #777777;
-  border-radius: 1em;
-  box-shadow: 0px 3px #777777; }
+    .bloquePeticiones .mostradoTiendas #bloqueTienda {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #777777;
+      border-radius: 1em;
+      box-shadow: 0px 3px #777777; }
 
 .hidden {
   display: none !important; }
