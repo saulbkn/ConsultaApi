@@ -33,6 +33,10 @@ header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 1em; }
+    .bloquePeticiones .navigator .newTienda:active {
+      animation-duration: 0.7s;
+      animation-name: form;
+      animation-timing-function: linear; }
   .bloquePeticiones #form {
     display: flex;
     flex-direction: column;
@@ -90,3 +94,6 @@ header {
 
 .show {
   display: block; }
+
+@keyframes form {
+  to { } }

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
 
@@ -41,29 +42,29 @@
                 <div class="dataContainer">
                     <div class="data">
                         <label for="name">Nombre</label>
-                        <input class="control" type="text" id="name" placeholder="Name" pattern="^[A-ZÁÉÍÓÚ][a-zñáéíóú]+(?: [A-ZÁÉÍÓÚ][a-zñáéíóú]+)?$" required>
+                        <input class="control" type="text" id="name" placeholder="Name" required>
                         <label class="error"></label>
                     </div>
                     <div class="data">
                         <label for="direction">Direccion</label>
-                        <input class="control" type="text" id="direction" placeholder="Direccion" required pattern="^[a-zA-Z]+[a-zA-Z\s-]*[a-zA-Z-]+$">
+                        <input class="control" type="text" id="direction" placeholder="Direccion" required>
                         <label class="error"></label>
                     </div>
                 </div>
-                <div class="dataContainer mt-2">
+                <div class="dataContainer">
                     <div class="data">
                         <label for="phone">Telefono</label>
-                        <input class="control" type="text" id="phone" placeholder="Ejem: (+34)922321642" pattern="^\(\+\d{2,3}\)[689]\d{8}$|^[689]\d{8}$" required>
+                        <input class="control" type="text" id="phone" placeholder="Ejem: 922321642" pattern="^[689]\d{8}$" required>
                         <label class="error"></label>
                     </div>
                     <div class="data">
                         <label for="local">Localidad</label>
-                        <input class="control" type="text" id="local" placeholder="Localidad" pattern="^38[0-9]{3}$" maxlength="5" required>
+                        <input class="control" type="text" id="local" placeholder="Localidad" required>
                         <label class="error "></label>
                     </div>
                 </div>
             </div>
-            <input type="submit" class="mt-2" id="sendInfo" value="Enviar">
+            <input type="submit" id="sendInfo" value="Enviar">
         </form>
 
         <div class="mostradoTiendas"></div>

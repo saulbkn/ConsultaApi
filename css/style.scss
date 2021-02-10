@@ -48,6 +48,16 @@ header{
         display: flex;
         justify-content: space-between;
         margin-bottom: 1em;
+
+        
+        .newTienda{
+
+            &:active{
+                animation-duration: 0.7s;
+                animation-name: form;
+                animation-timing-function: linear;
+            }
+        }
     }
 
     #form{
@@ -59,6 +69,7 @@ header{
         padding: 0.7em;
         gap:0.7em;
         border-radius: 1em;
+
 
         #sendInfo{
             align-self: flex-end;
@@ -140,5 +151,12 @@ header{
 
 .show{
     display: block;
+}
+
+
+@keyframes form {
+    to{
+       
+    }
 }
 

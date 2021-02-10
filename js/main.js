@@ -1,9 +1,8 @@
+import { infoErrors } from "./../files/errors.js";
 
 const blockBotonsPetitions = document.getElementsByClassName("bloqueBotones")[0];
 const blockPetitions = document.getElementsByClassName("bloquePeticiones")[0];
-
-const urlTienda = "http://localhost:8080/EmprInfRs_MoralesFelipeSaulJardel/webresources/tienda";
-
+const idTiendaNode = document.getElementById("idTienda");
 const blockDatas = document.getElementsByClassName("mostradoTiendas")[0];
 var templateShop = document.querySelector("#tiendaTemplate");
 
@@ -16,8 +15,6 @@ blockBotonsPetitions.querySelectorAll('input').forEach(element => {
         removeClassFromNode(blockPetitions, "hidden");
     }); 
 });
-
-let idTiendaNode = document.getElementById("idTienda");
 
 document.getElementById("search").addEventListener("click", () => {
     clearNode(blockDatas);
@@ -37,11 +34,44 @@ document.getElementById("search").addEventListener("click", () => {
     }
 });
 
+document.getElementById("name").addEventListener("input", (element) => {
+    var id = element.target.getAttribute("id");
+    checkName(element.target, infoErrors[id]);
+});
+
+document.getElementById("direction").addEventListener("input", (element) => {
+    var id = element.target.getAttribute("id");
+    checkDirection(element.target, infoErrors[id]);
+});
+
+document.getElementById("phone").addEventListener("input", (element) => {
+    var id = element.target.getAttribute("id");
+    checkPhone(element.target, infoErrors[id]);
+});
+
+document.getElementById("local").addEventListener("input", (element) => {
+    var id = element.target.getAttribute("id");
+    checkLocal(element.target, infoErrors[id]);
+});
+
+
+document.getElementById("form").addEventListener("submit", ()=> {
+    event.preventDefault();
+    checkAllForm();
+});
+
+
+const urlTienda = "http://localhost:8080/EmprInfRs_MoralesFelipeSaulJardel/webresources/tienda";
 let petitions = {
     "getAllTiendas": () => {},
     "getTiendaById": () => {},
     "insertTienda": () => {} 
 }
+
+var textName;
+var textDirection;
+var textPhone;
+var textLocal;
 
 //XHR petitions
 const getTiendasXHR = () => {
@@ -79,8 +109,19 @@ const getTiendaByIdXHR = (id) => {
 }
 
 const insertTiendaXHR = (tienda) => {
-    console.log("insertTienda");
-    console.log(tienda);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', urlTienda);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            petitions.getAllTiendas();
+        }else {
+            console.log(xhr.status);
+            createTiendaFailedNode("Error al insertar");
+        }
+    };
+    xhr.send(JSON.stringify(tienda));
 }
 
 //FETCH petitions 
@@ -118,7 +159,22 @@ const getTiendaByIdFetch = (id) => {
 }
 
 const insertTiendaFetch = (tienda) => {
-
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(tienda)
+    };
+      
+    fetch(urlTienda, options)
+        .then(response => response.text())
+        .then(data => {
+            petitions.getAllTiendas();
+    }).catch(err => {
+        console.log(err);
+        createTiendaFailedNode("Error al insertar tienda");
+    });
 }
 
 //JQUERY petitions
@@ -157,8 +213,24 @@ const getTiendaByIdJquery = (id) => {
 }
 
 const insertTiendaJquery = (tienda) => {
-
+    $.ajax({
+        url : urlTienda,
+        type : 'POST', 
+        dataType : 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(tienda),
+        success : function(json) { //función a ejecutar si es satisfactoria
+            console.log(json);
+            petitions.getAllTiendas();
+        },
+        error : function(jqXHR, status, error) { //función error
+            console.log("error");
+            console.log(status);
+            console.log(error);
+        }
+    }); 
 }
+
 //OTHER METHODS
 function chargePetitions(ajaxType){
     switch(ajaxType){
@@ -197,8 +269,114 @@ function chargeTiendaById(json){
         createPetitionBody(tiendasToShow);
 }
 
-function chargeInsertTienda(){
+function checkAllForm(){
+    var controlForms = document.querySelectorAll(".control");
+    var validates = 0;
 
+    controlForms.forEach(node => {
+        var id = node.getAttribute("id"); 
+        switch(id){
+            case "name": 
+                if(checkName(node, infoErrors[id]))
+                    validates++
+                break;
+            case "direction":
+                if(checkDirection(node, infoErrors[id]))        
+                    validates++
+                break;
+            case "phone":
+                if(checkPhone(node, infoErrors[id]))
+                    validates++
+                break;
+            case "local":
+                if(checkLocal(node, infoErrors[id]))
+                    validates++
+                break;
+            default:
+                break;
+        }
+    });
+
+    if(validates == controlForms.length){
+        resetForm();
+        var tienda = {
+            "Nombre": textName,
+            "Direccion": textDirection,
+            "Localidad": textLocal,
+            "Telefono": textPhone
+        }
+
+        petitions.insertTienda(tienda);
+    }
+}
+
+function checkName(node, errors){
+    
+    if(node.validity.valueMissing){
+        return addErrorMessage(node.nextElementSibling, node, errors.required);
+    }else{
+        textName = node.value;
+        return addErrorMessage(node.nextElementSibling, node, "");
+    }
+}
+
+function checkDirection(node, errors) {
+    if(node.validity.valueMissing){
+        return addErrorMessage(node.nextElementSibling, node, errors.required);
+    }else{
+        textDirection = node.value;
+        return addErrorMessage(node.nextElementSibling, node, "");
+    }
+}
+
+function checkPhone(node, errors){
+    
+    if(node.validity.valueMissing){
+        return addErrorMessage(node.nextElementSibling, node, errors.required);
+    }else if(node.validity.patternMismatch){
+        return addErrorMessage(node.nextElementSibling, node, errors.format);
+    }else{ 
+        textPhone = node.value;
+        return addErrorMessage(node.nextElementSibling, node, "");
+    }
+}
+
+function checkLocal(node, errors){
+    if(node.validity.valueMissing){
+        return addErrorMessage(node.nextElementSibling, node, errors.required);
+    }else{
+        textLocal = node.value;
+        return addErrorMessage(node.nextElementSibling, node, "");
+    }
+}
+
+function resetForm(){
+    document.getElementById("form").reset();
+
+    document.querySelectorAll(".inputCorrect").forEach((element) => {
+        removeClassFromNode(element, "inputCorrect");
+    });
+}
+
+function addErrorMessage(node, nodeToAddClass, message){
+    node.innerHTML = message;
+    var validated = false;
+
+    if(nodeToAddClass != null){
+        if(message == ""){
+            removeClassFromNode(nodeToAddClass, "inputError");
+            addClassToNode(nodeToAddClass, "inputCorrect");
+            validated = true;
+        }else{
+            removeClassFromNode(nodeToAddClass, "inputCorrect");
+            addClassToNode(nodeToAddClass, "inputError");
+            validated = false;
+        }
+    }else{
+        validated = message == "" ? true : false; 
+    }
+
+    return validated;
 }
 
 function createPetitionBody(tiendasToShow){
@@ -226,6 +404,8 @@ function createTiendaNode(shop){
 }
 
 function createTiendaFailedNode(message){
+    clearNode(blockDatas);
+
     var node = document.createElement("h2");
     node.innerHTML = message;
 
