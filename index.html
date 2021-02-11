@@ -13,7 +13,6 @@
     <!--
         Animacion personalizada de carga de pantalla
         Diferentes estados del botón, hoover, click, input con thoughbot lighter darker
-        validación igual al tema 6, pero todos los campos solo obligatorio y telefono empieza por 6, 8 y 9
     -->
 
     <section> 
@@ -22,55 +21,59 @@
         </header>
     </section>
     
-    <div class="bloqueBotones">
-        <input id="XHR" type="button" value="XHR button">
-        <input id="FETCH" type="button" value="Fetch button">
-        <input id="JQUERY" type="button" value="JQuery button">    
-    </div>
-
-    <div class="bloquePeticiones hidden">
-        <div class="navigator">
-            <span class="newTienda">Nueva tienda</span>
-            <div>
-                <input type="text" name="idTienda" id="idTienda" placeholder="Id de Tienda">
-                <input id="search" type="button" value="Buscar">
-            </div>
+    <section class="botones">
+        <div class="bloqueBotones">
+            <input id="XHR" type="button" value="XHR button">
+            <input id="FETCH" type="button" value="Fetch button">
+            <input id="JQUERY" type="button" value="JQuery button">    
         </div>
-        <form id="form" action="#" novalidate>
-            <div class="container">
-                <p class="title">Datos Personales</p>
-                <div class="dataContainer">
-                    <div class="data">
-                        <label for="name">Nombre</label>
-                        <input class="control" type="text" id="name" placeholder="Name" required>
-                        <label class="error"></label>
-                    </div>
-                    <div class="data">
-                        <label for="direction">Direccion</label>
-                        <input class="control" type="text" id="direction" placeholder="Direccion" required>
-                        <label class="error"></label>
-                    </div>
-                </div>
-                <div class="dataContainer">
-                    <div class="data">
-                        <label for="phone">Telefono</label>
-                        <input class="control" type="text" id="phone" placeholder="Ejem: 922321642" pattern="^[689]\d{8}$" required>
-                        <label class="error"></label>
-                    </div>
-                    <div class="data">
-                        <label for="local">Localidad</label>
-                        <input class="control" type="text" id="local" placeholder="Localidad" required>
-                        <label class="error "></label>
-                    </div>
+    </section>
+    
+
+    <section>
+        <div class="bloquePeticiones hidden">
+            <div class="navigator">
+                <span class="newTienda">Nueva tienda</span>
+                <div>
+                    <input type="text" name="idTienda" id="idTienda" placeholder="Id de Tienda">
+                    <input id="search" type="button" value="Buscar">
                 </div>
             </div>
-            <input type="submit" id="sendInfo" value="Enviar">
-        </form>
+            <form id="form" action="#" novalidate>
+                <div class="container">
+                    <p class="title">Datos Personales</p>
+                    <div class="dataContainer">
+                        <div class="data">
+                            <label for="name">Nombre</label>
+                            <input class="control" type="text" id="name" placeholder="Name" required>
+                            <label class="error"></label>
+                        </div>
+                        <div class="data">
+                            <label for="direction">Direccion</label>
+                            <input class="control" type="text" id="direction" placeholder="Direccion" required>
+                            <label class="error"></label>
+                        </div>
+                    </div>
+                    <div class="dataContainer">
+                        <div class="data">
+                            <label for="phone">Telefono</label>
+                            <input class="control" type="text" id="phone" placeholder="Ejem: 922321642" pattern="^[689]\d{8}$" required>
+                            <label class="error"></label>
+                        </div>
+                        <div class="data">
+                            <label for="local">Localidad</label>
+                            <input class="control" type="text" id="local" placeholder="Localidad" required>
+                            <label class="error "></label>
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" id="sendInfo" value="Enviar">
+            </form>
 
-        <div class="mostradoTiendas"></div>
-        
-    </div>
-
+            <div class="mostradoTiendas"></div>
+            
+        </div>
+    </section>
 
     <template id="tiendaTemplate">
         <div id="bloqueTienda">

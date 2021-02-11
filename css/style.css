@@ -13,17 +13,19 @@ header {
     padding: 0.2em;
     color: #c9d423; }
 
-.bloqueBotones {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-self: center;
-  align-items: center;
-  gap: 1em; }
-  .bloqueBotones input {
-    border-radius: 1em;
-    background-color: lightgreen; }
+.botones {
+  height: 100%; }
+  .botones .bloqueBotones {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+    gap: 1em; }
+    .botones .bloqueBotones input {
+      border-radius: 1em;
+      background-color: lightgreen; }
 
 .bloquePeticiones {
   margin-left: 6em;
@@ -63,7 +65,8 @@ header {
           .bloquePeticiones #form .container .dataContainer .data:nth-child(1) {
             padding-right: 0.7em; }
           .bloquePeticiones #form .container .dataContainer .data label {
-            display: block; }
+            display: block;
+            font-size: 14px; }
           .bloquePeticiones #form .container .dataContainer .data input {
             border-radius: 3px;
             border: 1px solid black;
@@ -96,4 +99,5 @@ header {
   display: block; }
 
 @keyframes form {
-  to { } }
+  to {
+    .toHide { } } }

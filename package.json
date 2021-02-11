@@ -17,10 +17,14 @@
   "homepage": "https://github.com/saulbkn/ConsultaApi#readme",
   "devDependencies": {
     "browser-sync": "^2.26.14",
+    "eslint": "^7.19.0",
     "gulp": "^4.0.2",
+    "gulp-jsdoc3": "^3.0.0",
     "gulp-sass": "^4.1.0",
     "node-sass": "^5.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "gulp-eslint": "^6.0.0"
+  },
   "description": ""
 }

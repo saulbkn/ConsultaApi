@@ -4,14 +4,14 @@ const blockBotonsPetitions = document.getElementsByClassName("bloqueBotones")[0]
 const blockPetitions = document.getElementsByClassName("bloquePeticiones")[0];
 const idTiendaNode = document.getElementById("idTienda");
 const blockDatas = document.getElementsByClassName("mostradoTiendas")[0];
-var templateShop = document.querySelector("#tiendaTemplate");
+const templateShop = document.querySelector("#tiendaTemplate");
 
 blockBotonsPetitions.querySelectorAll('input').forEach(element => {
     element.addEventListener("click", () => {
         chargePetitions(event.target.id);
         petitions.getAllTiendas();
 
-        addClassToNode(blockBotonsPetitions, "hidden");
+        addClassToNode(blockBotonsPetitions.parentNode, "hidden");
         removeClassFromNode(blockPetitions, "hidden");
     }); 
 });
@@ -54,10 +54,14 @@ document.getElementById("local").addEventListener("input", (element) => {
     checkLocal(element.target, infoErrors[id]);
 });
 
-
 document.getElementById("form").addEventListener("submit", ()=> {
     event.preventDefault();
     checkAllForm();
+});
+
+document.getElementsByClassName("newTienda")[0].addEventListener("click", () => {
+    //addClassToNode(document.getElementById("form"), "toHide");
+
 });
 
 
@@ -77,17 +81,37 @@ var textLocal;
 const getTiendasXHR = () => {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', urlTienda);
-    
+
+    xhr.onreadystatechange = function() {
+        console.log("on change");
+        if(xhr.readyState === 4){
+            console.log(xhr.readyState);
+            if (xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                chargeAllTiendas(json);
+            }else{
+                console.log(xhr.status);
+                createTiendaFailedNode("Tienda no encontrada");
+            }
+        }else{
+            createTiendaFailedNode("Acceso no encontrado");            
+        }
+    }
+
     xhr.onload = function() {
+        console.log("on load");
+        console.log(xhr);
         if (xhr.status === 200) {
             var json = JSON.parse(xhr.responseText);
             chargeAllTiendas(json);
-        }else {
+        }else{
             console.log(xhr.status);
             createTiendaFailedNode("Tienda no encontrada");
         }
     };
+    
     xhr.send();
+
 }
 
 const getTiendaByIdXHR = (id) => {
@@ -178,6 +202,8 @@ const insertTiendaFetch = (tienda) => {
 }
 
 //JQUERY petitions
+
+//Poner finally para ocultar la animacion
 const getTiendasJquery = () => {
     $.ajax({
         url : urlTienda,
@@ -232,6 +258,12 @@ const insertTiendaJquery = (tienda) => {
 }
 
 //OTHER METHODS
+
+/**
+ * Almacena las peticiones en un objeto que posteriormente se usa
+ *
+ * @param {*} ajaxType
+ */
 function chargePetitions(ajaxType){
     switch(ajaxType){
         case "XHR":
@@ -253,12 +285,23 @@ function chargePetitions(ajaxType){
     }
 }
 
+
+/**
+ * Envia los datos en formato de json al método chargeBody
+ *
+ *
+ * @param {*} json
+ */
 function chargeAllTiendas(json){
     let tiendasToShow = json["Tiendas"];
-
-    createPetitionBody(tiendasToShow);
+    chargeBody(tiendasToShow);
 }
 
+/**
+ * Carga una única tienda mandandola al método chargeBody
+ *
+ * @param {*} json
+ */
 function chargeTiendaById(json){
         let tiendasToShow = [];
         
@@ -266,7 +309,7 @@ function chargeTiendaById(json){
             tiendasToShow.push(json);
         }
         
-        createPetitionBody(tiendasToShow);
+        chargeBody(tiendasToShow);
 }
 
 function checkAllForm(){
@@ -379,7 +422,8 @@ function addErrorMessage(node, nodeToAddClass, message){
     return validated;
 }
 
-function createPetitionBody(tiendasToShow){
+
+function chargeBody(tiendasToShow){
     clearNode(blockDatas);
 
     if(tiendasToShow.length === 0){

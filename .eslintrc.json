@@ -1,0 +1,12 @@
+{
+    "env": {
+        "browser": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "camelcase": ["error"],
+        "prefer-const": ["error"],
+        "no-delete-var": ["error"],
+        "no-unused-vars": ["error"]
+    }
+}
