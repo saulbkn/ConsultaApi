@@ -1,5 +1,6 @@
 import { infoErrors } from "./../files/errors.js";
 
+
 const blockBotonsPetitions = document.getElementsByClassName("bloqueBotones")[0];
 const blockPetitions = document.getElementsByClassName("bloquePeticiones")[0];
 const idTiendaNode = document.getElementById("idTienda");
