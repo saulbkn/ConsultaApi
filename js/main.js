@@ -5,31 +5,34 @@ const blockPetitions = document.getElementsByClassName("bloquePeticiones")[0];
 const idTiendaNode = document.getElementById("idTienda");
 const blockDatas = document.getElementsByClassName("mostradoTiendas")[0];
 const templateShop = document.querySelector("#tiendaTemplate");
+const loadingHomeImage = document.getElementsByClassName("loadingHome")[0];
+const botonSearch = document.getElementById("search");
+const form = document.getElementById("form");
+const buttonForm = document.getElementById("sendInfo");
 
 blockBotonsPetitions.querySelectorAll('input').forEach(element => {
     element.addEventListener("click", () => {
         chargePetitions(event.target.id);
-        petitions.getAllTiendas();
-
         addClassToNode(blockBotonsPetitions.parentNode, "hidden");
-        removeClassFromNode(blockPetitions, "hidden");
+
+        petitions.getAllTiendas();        
     }); 
 });
 
-document.getElementById("search").addEventListener("click", () => {
+botonSearch.addEventListener("click", () => {
     clearNode(blockDatas);
     var id = idTiendaNode.value;
 
     if(id === ""){
         petitions.getAllTiendas();
     }else{
-        if(event.target.value != "x"){
+        if(event.currentTarget.firstElementChild.classList.contains("fa-search")){
+            addAnimatedElementToNode(event.currentTarget.firstElementChild, "fa-spinner", "fa-search");
             petitions.getTiendaById(id);
-            event.target.value = "x";
         }else{
             petitions.getAllTiendas();
             idTiendaNode.value = "";
-            event.target.value = "Buscar";
+            addAnimatedElementToNode(event.currentTarget.firstElementChild, "fa-search", "fa-times");
         }
     }
 });
@@ -54,14 +57,19 @@ document.getElementById("local").addEventListener("input", (element) => {
     checkLocal(element.target, infoErrors[id]);
 });
 
-document.getElementById("form").addEventListener("submit", ()=> {
+form.addEventListener("submit", ()=> {
     event.preventDefault();
     checkAllForm();
 });
 
 document.getElementsByClassName("newTienda")[0].addEventListener("click", () => {
-    //addClassToNode(document.getElementById("form"), "toHide");
+    resetForm();
 
+    if(form.classList.contains("toHide")){
+        removeClassFromNode(form, "toHide");
+    }else{
+        addClassToNode(form, "toHide");
+    }
 });
 
 
@@ -79,37 +87,25 @@ var textLocal;
 
 //XHR petitions
 const getTiendasXHR = () => {
+    controlImageAnimation(loadingHomeImage, blockPetitions, "hidden");
     var xhr = new XMLHttpRequest();
     xhr.open('GET', urlTienda);
-
+    
     xhr.onreadystatechange = function() {
-        console.log("on change");
         if(xhr.readyState === 4){
-            console.log(xhr.readyState);
             if (xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
                 chargeAllTiendas(json);
+                controlImageAnimation(loadingHomeImage, blockPetitions, "hidden");
             }else{
-                console.log(xhr.status);
                 createTiendaFailedNode("Tienda no encontrada");
+                controlImageAnimation(loadingHomeImage, blockPetitions, "hidden");
             }
         }else{
-            createTiendaFailedNode("Acceso no encontrado");            
+            createTiendaFailedNode("Acceso no encontrado");
+            controlImageAnimation(loadingHomeImage, blockPetitions, "hidden");
         }
     }
-
-    xhr.onload = function() {
-        console.log("on load");
-        console.log(xhr);
-        if (xhr.status === 200) {
-            var json = JSON.parse(xhr.responseText);
-            chargeAllTiendas(json);
-        }else{
-            console.log(xhr.status);
-            createTiendaFailedNode("Tienda no encontrada");
-        }
-    };
-    
     xhr.send();
 
 }
@@ -118,38 +114,62 @@ const getTiendaByIdXHR = (id) => {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', urlTienda + "/" + id);
     
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var json = JSON.parse(xhr.responseText);
-            chargeTiendaById(json);
-            
-        }else {
-            console.log(xhr.status);
-            createTiendaFailedNode("Tienda no encontrada");
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState === 4){
+            if (xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                chargeTiendaById(json);
+                addAnimatedElementToNode(botonSearch.firstElementChild, "fa-times", "fa-spinner");
+            }else{
+                createTiendaFailedNode("Tienda no encontrada");
+                addAnimatedElementToNode(botonSearch.firstElementChild, "fa-times", "fa-spinner");
+            }
+        }else{
+            createTiendaFailedNode("Acceso no encontrado");
+            addAnimatedElementToNode(botonSearch.firstElementChild, "fa-times", "fa-spinner");
         }
-    };
+    }
 
     xhr.send();
 }
 
 const insertTiendaXHR = (tienda) => {
+    addAnimatedElementToNode(buttonForm.firstElementChild, "fa-spinner", "");
+    changeButtonForm(true, "Cargando");
+
     var xhr = new XMLHttpRequest();
     xhr.open('POST', urlTienda);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            petitions.getAllTiendas();
-        }else {
-            console.log(xhr.status);
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState === 4){
+            if (xhr.status === 200) {
+                petitions.getAllTiendas();
+                addAnimatedElementToNode(buttonForm.firstElementChild, "", "fa-spinner");
+                changeButtonForm(false, "Enviar");
+
+                
+            }else{
+                createTiendaFailedNode("Error al insertar");
+                addAnimatedElementToNode(buttonForm.firstElementChild, "", "fa-spinner");
+                changeButtonForm(false, "Enviar");
+
+            }
+        }else{
             createTiendaFailedNode("Error al insertar");
+            addAnimatedElementToNode(buttonForm.firstElementChild, "", "fa-spinner");
+            changeButtonForm(false, "Enviar");
+
         }
-    };
+    }
+
     xhr.send(JSON.stringify(tienda));
 }
 
 //FETCH petitions 
 const getTiendasFetch = () => {
+    controlImageAnimation(loadingHomeImage, blockPetitions, "hidden");
+
     const options = {
         method: "GET"
       };
@@ -159,10 +179,11 @@ const getTiendasFetch = () => {
         .then(data => {
             var json = JSON.parse(data);
             chargeAllTiendas(json);
+            controlImageAnimation(loadingHomeImage, blockPetitions, "hidden");
         })
         .catch(err => {
-            console.log(err);
             createTiendaFailedNode("Tienda no encontrada");
+            controlImageAnimation(loadingHomeImage, blockPetitions, "hidden");
         });
 }
 
@@ -176,13 +197,17 @@ const getTiendaByIdFetch = (id) => {
         .then(data => {
             var json = JSON.parse(data);
             chargeTiendaById(json);
-    }).catch(err => {
-        console.log(err);
-        createTiendaFailedNode("Tienda no encontrada");
-    });
+            addAnimatedElementToNode(botonSearch.firstElementChild, "fa-times", "fa-spinner");
+        }).catch(err => {
+            createTiendaFailedNode("Tienda no encontrada");
+            addAnimatedElementToNode(botonSearch.firstElementChild, "fa-times", "fa-spinner");
+        });
 }
 
 const insertTiendaFetch = (tienda) => {
+    addAnimatedElementToNode(buttonForm.firstElementChild, "fa-spinner", "");
+    changeButtonForm(true, "Cargando");
+
     const options = {
         method: "POST",
         headers: {
@@ -195,9 +220,12 @@ const insertTiendaFetch = (tienda) => {
         .then(response => response.text())
         .then(data => {
             petitions.getAllTiendas();
+            addAnimatedElementToNode(buttonForm.firstElementChild, "", "fa-spinner");
+            changeButtonForm(false, "Enviar");
     }).catch(err => {
-        console.log(err);
         createTiendaFailedNode("Error al insertar tienda");
+        addAnimatedElementToNode(buttonForm.firstElementChild, "", "fa-spinner");
+        changeButtonForm(false, "Enviar");
     });
 }
 
@@ -205,18 +233,22 @@ const insertTiendaFetch = (tienda) => {
 
 //Poner finally para ocultar la animacion
 const getTiendasJquery = () => {
+    controlImageAnimation(loadingHomeImage, blockPetitions, "hidden");
+
     $.ajax({
         url : urlTienda,
         type : 'GET', 
         dataType : 'json',
         success : function(json) { //función a ejecutar si es satisfactoria
             chargeAllTiendas(json);
-
         },
         error : function(jqXHR, status, error) { //función error
-            console.log("error");
-            console.log(status);
             console.log(error);
+            createTiendaFailedNode("Tienda no encontrada");
+
+        },
+        complete: function () {
+            controlImageAnimation(loadingHomeImage, blockPetitions, "hidden");
         }
     }); 
 }
@@ -228,17 +260,20 @@ const getTiendaByIdJquery = (id) => {
         dataType : 'json',
         success : function(json) { //función a ejecutar si es satisfactoria
             chargeTiendaById(json);
-
         },
         error : function(jqXHR, status, error) { //función error
-            console.log("error");
-            console.log(status);
-            console.log(error);
+            createTiendaFailedNode("Tienda no encontrada");
+        },
+        complete: function () {
+            addAnimatedElementToNode(botonSearch.firstElementChild, "fa-times", "fa-spinner");
         }
     });
 }
 
 const insertTiendaJquery = (tienda) => {
+    addAnimatedElementToNode(buttonForm.firstElementChild, "fa-spinner", "");
+    changeButtonForm(true, "Cargando");
+
     $.ajax({
         url : urlTienda,
         type : 'POST', 
@@ -246,13 +281,14 @@ const insertTiendaJquery = (tienda) => {
         contentType: 'application/json',
         data: JSON.stringify(tienda),
         success : function(json) { //función a ejecutar si es satisfactoria
-            console.log(json);
             petitions.getAllTiendas();
         },
         error : function(jqXHR, status, error) { //función error
-            console.log("error");
-            console.log(status);
-            console.log(error);
+            createTiendaFailedNode("Error al insertar tienda");
+        },
+        complete: function () {
+            addAnimatedElementToNode(buttonForm.firstElementChild, "", "fa-spinner");
+            changeButtonForm(false, "Enviar");
         }
     }); 
 }
@@ -399,6 +435,14 @@ function resetForm(){
     document.querySelectorAll(".inputCorrect").forEach((element) => {
         removeClassFromNode(element, "inputCorrect");
     });
+
+    document.querySelectorAll(".inputError").forEach((element) => {
+        removeClassFromNode(element, "inputError");
+    });
+
+    document.querySelectorAll(".error").forEach((element) => {
+        element.innerHTML = "";
+    });
 }
 
 function addErrorMessage(node, nodeToAddClass, message){
@@ -421,7 +465,6 @@ function addErrorMessage(node, nodeToAddClass, message){
 
     return validated;
 }
-
 
 function chargeBody(tiendasToShow){
     clearNode(blockDatas);
@@ -456,6 +499,31 @@ function createTiendaFailedNode(message){
     blockDatas.appendChild(node);
 }
 
+function controlImageAnimation(node, secondNode, nameClass){
+    if(node.classList.contains(nameClass)){
+        removeClassFromNode(node, nameClass);
+    }else{
+        addClassToNode(node, nameClass);
+        removeClassFromNode(secondNode, nameClass);
+    }
+}
+
+function addAnimatedElementToNode(node, text, classToDelete){
+    removeClassFromNode(node, classToDelete);
+    addClassToNode(node, text);
+
+    if(!node.classList.contains("imageButton") && text === "fa-spinner"){
+        addClassToNode(node, "imageButton");
+    }else{
+        removeClassFromNode(node, "imageButton");
+    }
+}
+
+function changeButtonForm(disabled, text){
+    buttonForm.disabled = disabled;
+    buttonForm.firstElementChild.nextElementSibling.innerHTML = text;
+}
+
 function clearNode(node){
     while (node.firstChild) {
         node.removeChild(node.lastChild);
@@ -463,7 +531,9 @@ function clearNode(node){
 }
 
 function addClassToNode(node, newClass){
-    node.classList.add(newClass);
+    if(newClass != ""){
+        node.classList.add(newClass);
+    }
 }
 
 function removeClassFromNode(node, classToRemove){

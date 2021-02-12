@@ -1,9 +1,14 @@
 * {
+  font-family: "Source Sans Pro", Helvetica, Verdana, sans-serif; }
+
+* {
   box-sizing: border-box;
   margin: 0; }
 
 html, body {
-  height: 100%; }
+  height: 100%;
+  display: flex;
+  flex-direction: column; }
 
 header {
   width: 100%;
@@ -14,18 +19,25 @@ header {
     color: #c9d423; }
 
 .botones {
-  height: 100%; }
+  flex-basis: 100%; }
   .botones .bloqueBotones {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-self: center;
     align-items: center;
-    gap: 1em; }
+    gap: 0.5em; }
+    .botones .bloqueBotones .texto {
+      font-size: 25px; }
     .botones .bloqueBotones input {
       border-radius: 1em;
-      background-color: lightgreen; }
+      background-color: lightgreen;
+      width: 250px;
+      font-size: 20px; }
+      .botones .bloqueBotones input:hover {
+        background-color: #a3dba3; }
+      .botones .bloqueBotones input:active {
+        background-color: #328032; }
 
 .bloquePeticiones {
   margin-left: 6em;
@@ -35,27 +47,73 @@ header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 1em; }
-    .bloquePeticiones .navigator .newTienda:active {
-      animation-duration: 0.7s;
-      animation-name: form;
-      animation-timing-function: linear; }
+    .bloquePeticiones .navigator .newTienda {
+      align-self: center;
+      color: #147507; }
+    .bloquePeticiones .navigator div {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      padding: 5px; }
+      .bloquePeticiones .navigator div #idTienda {
+        border-radius: 0.5em;
+        border: 2px solid #40a540; }
+      .bloquePeticiones .navigator div #search {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        border: 2px solid #40a540;
+        border-radius: 0.5em;
+        padding-left: 5px;
+        padding-right: 5px; }
+        .bloquePeticiones .navigator div #search .fas {
+          width: 100%;
+          height: 100%; }
+        .bloquePeticiones .navigator div #search:hover {
+          background-color: #a3dba3; }
+        .bloquePeticiones .navigator div #search:active {
+          background-color: #328032; }
   .bloquePeticiones #form {
     display: flex;
     flex-direction: column;
-    border: 2px solid #777777;
     margin-top: 1em;
     margin-bottom: 1em;
-    padding: 0.7em;
     gap: 0.7em;
-    border-radius: 1em; }
+    border-radius: 0.5em;
+    overflow: hidden;
+    height: 0px;
+    transition: all 0.5s ease-in-out;
+    border: 0px solid #40a540; }
+    .bloquePeticiones #form.toHide {
+      padding: 0.7em;
+      border: 2px solid #40a540;
+      height: 220px; }
     .bloquePeticiones #form #sendInfo {
-      align-self: flex-end; }
+      align-self: flex-end;
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      border-radius: 0.5em;
+      border: 2px solid #40a540;
+      padding: 5px; }
+      .bloquePeticiones #form #sendInfo:hover {
+        background-color: #a3dba3; }
+      .bloquePeticiones #form #sendInfo:active {
+        background-color: #328032; }
+      .bloquePeticiones #form #sendInfo:disabled {
+        background-color: #c8e9c8; }
+      .bloquePeticiones #form #sendInfo .fas {
+        width: 100%;
+        height: 100%; }
+      .bloquePeticiones #form #sendInfo .fa-spinner {
+        margin-right: 5px; }
     .bloquePeticiones #form .container {
       display: flex;
       flex-direction: column;
       gap: 0.7em; }
       .bloquePeticiones #form .container .title {
-        font-size: 20px; }
+        font-size: 20px;
+        color: #40a540; }
       .bloquePeticiones #form .container .dataContainer {
         display: flex;
         flex-direction: row;
@@ -88,9 +146,27 @@ header {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      border: 2px solid #777777;
+      border: 2px solid #40a540;
       border-radius: 1em;
-      box-shadow: 0px 3px #777777; }
+      box-shadow: 0px 3px #147507; }
+
+.loadingHome {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(16, 16, 16, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+  .loadingHome img {
+    width: 100px;
+    animation-duration: 1.5s;
+    animation-name: loadingAnimation;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite; }
 
 .hidden {
   display: none !important; }
@@ -98,6 +174,18 @@ header {
 .show {
   display: block; }
 
+.imageButton {
+  animation-duration: 1.5s;
+  animation-name: loadingAnimation;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite; }
+
 @keyframes form {
+  from {
+    height: 0%; }
   to {
-    .toHide { } } }
+    height: 100%; } }
+
+@keyframes loadingAnimation {
+  to {
+    transform: rotate(-360deg); } }

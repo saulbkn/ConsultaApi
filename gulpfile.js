@@ -1,10 +1,11 @@
+/* eslint-disable no-undef */
 'use strict';
 
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync').create();
-const jsdoc = require('gulp-jsdoc3');
-const eslint = require('gulp-eslint');
+var jsdoc = require('gulp-jsdoc3');
+var eslint = require('gulp-eslint');
 
 sass.compiler = require('node-sass');
 

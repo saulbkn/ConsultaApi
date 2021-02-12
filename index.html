@@ -7,6 +7,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script src="https://kit.fontawesome.com/326662e86f.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -23,9 +25,16 @@
     
     <section class="botones">
         <div class="bloqueBotones">
+            <p class="texto">Elije el método para realizar AJAX</p>
             <input id="XHR" type="button" value="XHR button">
             <input id="FETCH" type="button" value="Fetch button">
             <input id="JQUERY" type="button" value="JQuery button">    
+        </div>
+    </section>
+
+    <section>
+        <div class="loadingHome hidden">
+            <img src="./images/loadinghomeimage.png" alt="" >
         </div>
     </section>
     
@@ -36,7 +45,9 @@
                 <span class="newTienda">Nueva tienda</span>
                 <div>
                     <input type="text" name="idTienda" id="idTienda" placeholder="Id de Tienda">
-                    <input id="search" type="button" value="Buscar">
+                    <div id="search">
+                        <i class="fas fa-search"></i>
+                    </div>
                 </div>
             </div>
             <form id="form" action="#" novalidate>
@@ -63,11 +74,13 @@
                         <div class="data">
                             <label for="local">Localidad</label>
                             <input class="control" type="text" id="local" placeholder="Localidad" required>
-                            <label class="error "></label>
+                            <label class="error"></label>
                         </div>
                     </div>
                 </div>
-                <input type="submit" id="sendInfo" value="Enviar">
+                <button type="submit" id="sendInfo">
+                    <i class="fas"></i>
+                    <span>Enviar</span></button>
             </form>
 
             <div class="mostradoTiendas"></div>
