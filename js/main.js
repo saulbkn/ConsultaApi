@@ -73,13 +73,13 @@ document.getElementsByClassName("newTienda")[0].addEventListener("click", () => 
 });
 
 
-const urlTienda = "http://localhost:8080/EmprInfRs_MoralesFelipeSaulJardel/webresources/tienda";
 let petitions = {
     "getAllTiendas": () => {},
     "getTiendaById": () => {},
     "insertTienda": () => {} 
 }
 
+const urlTienda = "http://localhost:8080/EmprInfRs_MoralesFelipeSaulJardel/webresources/tienda";
 var textName;
 var textDirection;
 var textPhone;
@@ -348,6 +348,11 @@ function chargeTiendaById(json){
         chargeBody(tiendasToShow);
 }
 
+
+/**
+ * Comprueba todos los campos del formulario
+ *
+ */
 function checkAllForm(){
     var controlForms = document.querySelectorAll(".control");
     var validates = 0;
@@ -389,6 +394,13 @@ function checkAllForm(){
     }
 }
 
+/**
+ * Comprueba el campo del nombre
+ *
+ * @param {*} node
+ * @param {*} errors
+ * @return {*} 
+ */
 function checkName(node, errors){
     
     if(node.validity.valueMissing){
@@ -399,6 +411,14 @@ function checkName(node, errors){
     }
 }
 
+
+/**
+ * Comprueba el campo de texto de direccion
+ *
+ * @param {*} node
+ * @param {*} errors
+ * @return {*} 
+ */
 function checkDirection(node, errors) {
     if(node.validity.valueMissing){
         return addErrorMessage(node.nextElementSibling, node, errors.required);
@@ -408,6 +428,14 @@ function checkDirection(node, errors) {
     }
 }
 
+
+/**
+ * Comprueba el campo de texto de  telefono
+ *
+ * @param {*} node
+ * @param {*} errors
+ * @return {*} 
+ */
 function checkPhone(node, errors){
     
     if(node.validity.valueMissing){
@@ -420,6 +448,14 @@ function checkPhone(node, errors){
     }
 }
 
+
+/**
+ * Comprueba el campo de texto de localidad
+ *
+ * @param {*} node
+ * @param {*} errors
+ * @return {*} 
+ */
 function checkLocal(node, errors){
     if(node.validity.valueMissing){
         return addErrorMessage(node.nextElementSibling, node, errors.required);
@@ -429,6 +465,11 @@ function checkLocal(node, errors){
     }
 }
 
+
+/**
+ *  Resetea los campos del formulario
+ *
+ */
 function resetForm(){
     document.getElementById("form").reset();
 
@@ -445,6 +486,15 @@ function resetForm(){
     });
 }
 
+
+/**
+ * Agrega un mensaje de error debajo del campo mandado y pone en rojo el propio campo
+ *
+ * @param {*} node
+ * @param {*} nodeToAddClass
+ * @param {*} message
+ * @return {*} 
+ */
 function addErrorMessage(node, nodeToAddClass, message){
     node.innerHTML = message;
     var validated = false;
@@ -466,6 +516,12 @@ function addErrorMessage(node, nodeToAddClass, message){
     return validated;
 }
 
+
+/**
+ * Carga las tiendas en el cuerpo de la página o muestra un error de no encontradas
+ *
+ * @param {*} tiendasToShow
+ */
 function chargeBody(tiendasToShow){
     clearNode(blockDatas);
 
@@ -479,6 +535,12 @@ function chargeBody(tiendasToShow){
 
 }
 
+
+/**
+ * Clona el template de tienda y lo añade al cuerpo del body
+ *
+ * @param {*} shop
+ */
 function createTiendaNode(shop){
     var shopNode = templateShop.content.querySelector("#bloqueTienda");
     var nodeClone = shopNode.cloneNode(true);
@@ -490,6 +552,12 @@ function createTiendaNode(shop){
     blockDatas.appendChild(nodeClone);
 }
 
+
+/**
+ * Crea un nodo con un mensaje de error
+ *
+ * @param {*} message
+ */
 function createTiendaFailedNode(message){
     clearNode(blockDatas);
 
@@ -499,6 +567,14 @@ function createTiendaFailedNode(message){
     blockDatas.appendChild(node);
 }
 
+
+/**
+ * Añade o elimina la clase en los nodos recibidos
+ *
+ * @param {*} node
+ * @param {*} secondNode
+ * @param {*} nameClass
+ */
 function controlImageAnimation(node, secondNode, nameClass){
     if(node.classList.contains(nameClass)){
         removeClassFromNode(node, nameClass);
@@ -508,34 +584,65 @@ function controlImageAnimation(node, secondNode, nameClass){
     }
 }
 
-function addAnimatedElementToNode(node, text, classToDelete){
-    removeClassFromNode(node, classToDelete);
-    addClassToNode(node, text);
 
-    if(!node.classList.contains("imageButton") && text === "fa-spinner"){
+/**
+ * Añade y elimina clases del nodo, además de añadir o quitar una clase predefinida en el nodo
+ *
+ * @param {*} node
+ * @param {*} classToAdd
+ * @param {*} classToDelete
+ */
+function addAnimatedElementToNode(node, classToAdd, classToDelete){
+    removeClassFromNode(node, classToDelete);
+    addClassToNode(node, classToAdd);
+
+    if(!node.classList.contains("imageButton") && classToAdd === "fa-spinner"){
         addClassToNode(node, "imageButton");
     }else{
         removeClassFromNode(node, "imageButton");
     }
 }
 
+/**
+ * Deshabilita o habilita un botón y le cambia el texto a un hijo del nodo
+ *
+ * @param {*} disabled
+ * @param {*} text
+ */
 function changeButtonForm(disabled, text){
     buttonForm.disabled = disabled;
     buttonForm.firstElementChild.nextElementSibling.innerHTML = text;
 }
 
+/**
+ * Elimina todos los hijos de un nodo
+ *
+ * @param {*} node
+ */
 function clearNode(node){
     while (node.firstChild) {
         node.removeChild(node.lastChild);
     }
 }
 
+/**
+ * Añade una clase al nodo si no recibe un parámetro vacío
+ *
+ * @param {*} node
+ * @param {*} newClass
+ */
 function addClassToNode(node, newClass){
     if(newClass != ""){
         node.classList.add(newClass);
     }
 }
 
+/**
+ * Elimina una clase del nodo si lo contiene
+ *
+ * @param {*} node
+ * @param {*} classToRemove
+ */
 function removeClassFromNode(node, classToRemove){
     if (node.classList.contains(classToRemove)) {
         node.classList.remove(classToRemove);
