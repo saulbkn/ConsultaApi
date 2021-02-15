@@ -270,16 +270,6 @@ header{
     animation-iteration-count: infinite;
 }
 
-
-@keyframes form {
-    from{
-        height: 0%;
-    }
-    to{
-        height: 100%;
-    }
-}
-
 @keyframes loadingAnimation{
     to {
         transform: rotate(-360deg);
