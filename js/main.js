@@ -80,7 +80,8 @@ let petitions = {
     "insertTienda": () => {} 
 }
 
-const urlTienda = "http://localhost:8080/EmprInfRs_MoralesFelipeSaulJardel/webresources/tienda";
+//const urlTienda = "http://localhost:8080/EmprInfRs_MoralesFelipeSaulJardel/webresources/tienda";
+var urlTienda = "https://webapp-210130211157.azurewebsites.net/webresources/mitienda/";
 var textName;
 var textDirection;
 var textPhone;
@@ -113,7 +114,7 @@ const getTiendasXHR = () => {
 
 const getTiendaByIdXHR = (id) => {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', urlTienda + "/" + id);
+    xhr.open('GET', urlTienda + id);
     
     xhr.onreadystatechange = function() {
         if(xhr.readyState === 4){
@@ -143,8 +144,10 @@ const insertTiendaXHR = (tienda) => {
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     
     xhr.onreadystatechange = function() {
+
+        console.log(xhr.status);
         if(xhr.readyState === 4){
-            if (xhr.status === 200) {
+            if (xhr.status === 204) {
                 petitions.getAllTiendas();
                 addAnimatedElementToNode(buttonForm.firstElementChild, "", "fa-spinner");
                 changeButtonForm(false, "Enviar");
@@ -330,8 +333,8 @@ function chargePetitions(ajaxType){
  * @param {*} json
  */
 function chargeAllTiendas(json){
-    let tiendasToShow = json["Tiendas"];
-    chargeBody(tiendasToShow);
+    //let tiendasToShow = json["Tiendas"];
+    chargeBody(json);
 }
 
 /**
@@ -342,7 +345,7 @@ function chargeAllTiendas(json){
 function chargeTiendaById(json){
         let tiendasToShow = [];
         
-        if(json.Nombre !== undefined){
+        if(json.nombreTienda !== undefined){
             tiendasToShow.push(json);
         }
         
@@ -385,10 +388,10 @@ function checkAllForm(){
     if(validates == controlForms.length){
         resetForm();
         var tienda = {
-            "Nombre": textName,
-            "Direccion": textDirection,
-            "Localidad": textLocal,
-            "Telefono": textPhone
+            "nombreTienda": textName,
+            "direccion": textDirection,
+            "localidad": textLocal,
+            "telefono": textPhone
         }
 
         petitions.insertTienda(tienda);
@@ -546,9 +549,9 @@ function createTiendaNode(shop){
     var shopNode = templateShop.content.querySelector("#bloqueTienda");
     var nodeClone = shopNode.cloneNode(true);
 
-    nodeClone.getElementsByClassName("title")[0].innerHTML = shop.Nombre;
-    nodeClone.getElementsByClassName("direction")[0].innerHTML = shop.Direccion;
-    nodeClone.getElementsByClassName("phone")[0].innerHTML = shop.Telefono;
+    nodeClone.getElementsByClassName("title")[0].innerHTML = shop.nombreTienda;
+    nodeClone.getElementsByClassName("direction")[0].innerHTML = shop.direccion;
+    nodeClone.getElementsByClassName("phone")[0].innerHTML = shop.telefono;
 
     blockDatas.appendChild(nodeClone);
 }
